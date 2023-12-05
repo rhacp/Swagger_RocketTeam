@@ -1,0 +1,474 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/users:
+    get:
+      tags:
+      - user-controller
+      operationId: getUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+    post:
+      tags:
+      - user-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/teams:
+    get:
+      tags:
+      - team-controller
+      operationId: getAllTeams
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+    post:
+      tags:
+      - team-controller
+      operationId: createTeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /api/tasks:
+    get:
+      tags:
+      - task-controller
+      operationId: getTasks
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskDTO'
+    post:
+      tags:
+      - task-controller
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+  /api/projects:
+    get:
+      tags:
+      - project-controller
+      operationId: getAllProjects
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectDTO'
+    post:
+      tags:
+      - project-controller
+      operationId: createProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProjectDTO'
+  /api/users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/teams/{id}:
+    get:
+      tags:
+      - team-controller
+      operationId: getTeamById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /api/tasks/{id}:
+    get:
+      tags:
+      - task-controller
+      operationId: getTaskById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+  /api/projects/{id}:
+    get:
+      tags:
+      - project-controller
+      operationId: getProjectById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProjectDTO'
+    delete:
+      tags:
+      - project-controller
+      operationId: deleteProject
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        percentageComplete:
+          type: number
+          format: double
+        description:
+          type: string
+        team:
+          $ref: '#/components/schemas/Team'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        complete:
+          type: boolean
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        createdBy:
+          type: string
+        status:
+          type: string
+          enum:
+          - TO_DO
+          - IN_PROGRESS
+          - IN_REVIEW
+          - DONE
+        priority:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        progress:
+          type: number
+          format: double
+        dueDate:
+          type: string
+          format: date
+        completedBy:
+          type: string
+        reviewedBy:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        project:
+          $ref: '#/components/schemas/Project'
+        comments:
+          type: object
+          additionalProperties:
+            type: string
+        objectives:
+          type: object
+          additionalProperties:
+            type: boolean
+        complete:
+          type: boolean
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        teamLeader:
+          type: string
+        project:
+          $ref: '#/components/schemas/Project'
+        userList:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+          enum:
+          - JUNIOR
+          - MEDIOR
+          - SENIOR
+          - PROJECTMANAGER
+          - TEAMLEADER
+        email:
+          type: string
+        tasksForUser:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        team:
+          $ref: '#/components/schemas/Team'
+    UserDTO:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          maxLength: 30
+          minLength: 3
+          type: string
+        lastName:
+          maxLength: 30
+          minLength: 3
+          type: string
+        roleEnum:
+          type: string
+          enum:
+          - JUNIOR
+          - MEDIOR
+          - SENIOR
+          - PROJECTMANAGER
+          - TEAMLEADER
+        email:
+          type: string
+        tasksForUser:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        team:
+          $ref: '#/components/schemas/Team'
+    TeamDTO:
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 30
+          minLength: 3
+          type: string
+        teamLeader:
+          maxLength: 30
+          minLength: 0
+          type: string
+        project:
+          $ref: '#/components/schemas/Project'
+        userList:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    TaskDTO:
+      required:
+      - description
+      - title
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          maxLength: 30
+          minLength: 3
+          type: string
+        description:
+          maxLength: 100
+          minLength: 3
+          type: string
+        createdBy:
+          type: string
+        status:
+          type: string
+          enum:
+          - TO_DO
+          - IN_PROGRESS
+          - IN_REVIEW
+          - DONE
+        priority:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        progress:
+          type: number
+          format: double
+        dueDate:
+          type: string
+          format: date
+        completedBy:
+          type: string
+        reviewedBy:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+        comments:
+          type: object
+          additionalProperties:
+            type: string
+        objectives:
+          type: object
+          additionalProperties:
+            type: boolean
+        complete:
+          type: boolean
+    ProjectDTO:
+      required:
+      - description
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 30
+          minLength: 3
+          type: string
+        percentageComplete:
+          type: number
+          format: double
+        description:
+          maxLength: 250
+          minLength: 3
+          type: string
+        team:
+          $ref: '#/components/schemas/Team'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        complete:
+          type: boolean
