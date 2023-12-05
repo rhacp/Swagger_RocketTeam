@@ -1,0 +1,299 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /api/users:
+    get:
+      tags:
+      - user-controller
+      operationId: getUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+    post:
+      tags:
+      - user-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/teams:
+    get:
+      tags:
+      - team-controller
+      operationId: getAllTeams
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+    post:
+      tags:
+      - team-controller
+      operationId: createTeam
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /api/tasks:
+    get:
+      tags:
+      - task-controller
+      operationId: getTasks
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskDTO'
+    post:
+      tags:
+      - task-controller
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+  /api/users/{id}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+  /api/teams/{id}:
+    get:
+      tags:
+      - team-controller
+      operationId: getTeamById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /api/tasks/{id}:
+    get:
+      tags:
+      - task-controller
+      operationId: getTaskById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskDTO'
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date
+        priority:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        user:
+          $ref: '#/components/schemas/User'
+        comments:
+          type: object
+          additionalProperties:
+            type: string
+        complete:
+          type: boolean
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        projectName:
+          type: string
+        userList:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+        tasksForUser:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        team:
+          $ref: '#/components/schemas/Team'
+    UserDTO:
+      required:
+      - firstName
+      - lastName
+      - role
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          maxLength: 25
+          minLength: 3
+          type: string
+        lastName:
+          maxLength: 25
+          minLength: 3
+          type: string
+        role:
+          maxLength: 25
+          minLength: 3
+          type: string
+        tasksForUser:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    TeamDTO:
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          maxLength: 30
+          minLength: 3
+          type: string
+        projectName:
+          maxLength: 30
+          minLength: 0
+          type: string
+        userList:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    TaskDTO:
+      required:
+      - description
+      - title
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          maxLength: 30
+          minLength: 3
+          type: string
+        description:
+          maxLength: 100
+          minLength: 3
+          type: string
+        dueDate:
+          type: string
+          format: date
+        priority:
+          type: string
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        comments:
+          type: object
+          additionalProperties:
+            type: string
+        user:
+          $ref: '#/components/schemas/User'
+        complete:
+          type: boolean
