@@ -193,7 +193,7 @@ components:
           format: int64
         name:
           type: string
-        projectName:
+        teamLeader:
           type: string
         userList:
           type: array
@@ -211,6 +211,8 @@ components:
           type: string
         role:
           type: string
+        email:
+          type: string
         tasksForUser:
           type: array
           items:
@@ -219,6 +221,7 @@ components:
           $ref: '#/components/schemas/Team'
     UserDTO:
       required:
+      - email
       - firstName
       - lastName
       - role
@@ -228,21 +231,27 @@ components:
           type: integer
           format: int64
         firstName:
-          maxLength: 25
+          maxLength: 30
           minLength: 3
           type: string
         lastName:
-          maxLength: 25
+          maxLength: 30
           minLength: 3
           type: string
         role:
-          maxLength: 25
+          maxLength: 30
+          minLength: 3
+          type: string
+        email:
+          maxLength: 30
           minLength: 3
           type: string
         tasksForUser:
           type: array
           items:
             $ref: '#/components/schemas/Task'
+        team:
+          $ref: '#/components/schemas/Team'
     TeamDTO:
       required:
       - name
@@ -255,7 +264,7 @@ components:
           maxLength: 30
           minLength: 3
           type: string
-        projectName:
+        teamLeader:
           maxLength: 30
           minLength: 0
           type: string
