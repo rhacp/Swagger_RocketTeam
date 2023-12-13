@@ -31,6 +31,37 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/UserDTO'
+  /api/users/{userId}/{targetUserId}:
+    put:
+      tags:
+      - user-controller
+      operationId: updateUserRole
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: targetUserId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
   /api/users/{userId}/teams/{teamId}/{targetProjectId}:
     put:
       tags:
@@ -62,6 +93,37 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TeamDTO'
+  /api/users/{userId}/teams/{teamId}/assignUser/{targetUserId}:
+    put:
+      tags:
+      - user-controller
+      operationId: assignUserToTeam
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: teamId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: targetUserId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
   /api/users/{userId}/tasks/{taskId}/{targetUserId}:
     put:
       tags:
@@ -181,6 +243,26 @@ paths:
               schema:
                 $ref: '#/components/schemas/TeamDTO'
   /api/users/{userId}/tasks:
+    get:
+      tags:
+      - user-controller
+      operationId: getAllTasksForUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskDTO'
     post:
       tags:
       - user-controller
