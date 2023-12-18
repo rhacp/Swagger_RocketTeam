@@ -7,6 +7,24 @@ servers:
   description: Generated server url
 paths:
   /api/users/{userId}:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserById
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UserDTO'
     put:
       tags:
       - user-controller
@@ -457,25 +475,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TaskDTO'
-  /api/users/{id}:
-    get:
-      tags:
-      - user-controller
-      operationId: getUserById
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/UserDTO'
   /api/teams:
     get:
       tags:
